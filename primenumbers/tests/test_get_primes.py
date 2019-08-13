@@ -55,7 +55,7 @@ class TestGetPrimes(TestCase):
 
     def test_get_primes_l02_section(self):
         self.assertEqual([467, 479, 487, 491, 499, 503, 509, 521, 523, 541],
-                         get_primes(1000000, page=10, size=10)["numbers"])  # repetitive call using previous results - 149 ms
+                         get_primes(1000000, page=10, size=10)["numbers"])  # repetitive call  - 149 ms
 
     def test_get_primes_l03(self):
         self.assertEqual(78504, get_primes(1000100)["count"])  # 148 ms -- utilizes results built from earlier test
