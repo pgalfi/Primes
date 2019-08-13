@@ -13,6 +13,6 @@ class GetPrimeNumbers(views.generic.TemplateView):
         params = GetPrimeNumbersParamsForm(data=request.GET)
         if params.is_valid():
             results = get_primes(params.cleaned_data["n"], start=params.cleaned_data["start"],
-                                 page=params.cleaned_data["page"], size=params.cleaned_data["page_size"])
+                                 page=params.cleaned_data["page"], page_size=params.cleaned_data["page_size"])
             return HttpResponse(json.dumps(results))
         return HttpResponse(json.dumps({"errors": params.errors}))

@@ -24,14 +24,15 @@ def _primes_list(n, start=1):
     return [i for i in range(start, n) if primes[i]]
 
 
-def get_primes(n, start=1, page=1, size=None):
+def get_primes(n, start=1, page=1, page_size=None):
     primes_list = _primes_list(n, start)
-    if size is None:
-        return {"numbers": primes_list, "count": len(primes_list)}
-    return {"numbers": primes_list[(page - 1) * size: page * size], "count": len(primes_list)}
+    if page_size is None:
+        return {"numbers": primes_list, "count": len(primes_list), "start": start, "page": page, "page_size": page_size}
+    return {"numbers": primes_list[(page - 1) * page_size: page * page_size], "count": len(primes_list),
+            "start": start, "page": page, "page_size": page_size}
 
 
-## Below versions are obsolete, were kept only for testing and performance comparisons
+# Below versions are obsolete, were kept only for testing and performance comparisons
 
 def get_primes_version_01(n, start=1, page=1, size=None):
     if n < 2:
