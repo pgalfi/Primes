@@ -7,7 +7,7 @@ primes = bitarray([False, False])  # numbers 0 and 1 are not prime
 bitarray_access = Lock()
 
 
-def get_primes(n, start=1, page=1, size=None):
+def _primes_list(n, start=1):
     if n < 2:
         return []
     prev_n = primes.length() - 1
@@ -21,10 +21,17 @@ def get_primes(n, start=1, page=1, size=None):
             for j in range(max(i * i, i * (trunc(prev_n / i) + 1)), n + 1, i):
                 primes[j] = False
     bitarray_access.release()
-    if size is None:
-        return [i for i in range(start, n) if primes[i]]
-    return [i for i in range(start, n) if primes[i]][(page - 1) * size: page * size]
+    return [i for i in range(start, n) if primes[i]]
 
+
+def get_primes(n, start=1, page=1, size=None):
+    primes_list = _primes_list(n, start)
+    if size is None:
+        return {"numbers": primes_list, "count": len(primes_list)}
+    return {"numbers": primes_list[(page - 1) * size: page * size], "count": len(primes_list)}
+
+
+## Below versions are obsolete, were kept only for testing and performance comparisons
 
 def get_primes_version_01(n, start=1, page=1, size=None):
     if n < 2:

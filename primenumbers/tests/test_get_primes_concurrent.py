@@ -1,7 +1,7 @@
 import threading
 from unittest import TestCase
 
-from primenumbers.services.prime_generator import get_primes
+from primenumbers.services.primes import get_primes
 
 
 def test_concurrently(times):
@@ -35,10 +35,10 @@ class TestGetPrimesConcurrent(TestCase):
 
     @test_concurrently(5)
     def test_concurrent_01(self):
-        self.assertEqual(78498, len(get_primes(1000000)))  # 1s 202ms -- one time execution time is 600ms
+        self.assertEqual(78498, get_primes(1000000)["count"])  # 1s 202ms -- one time execution time is 600ms
 
     @test_concurrently(10)
     def test_concurrent_02(self):
-        self.assertEqual(78498, len(get_primes(1000000)))  # 1s 475ms -- one time execution is 600ms
+        self.assertEqual(78498, get_primes(1000000)["count"])  # 1s 475ms -- one time execution is 600ms
 
 
