@@ -1,7 +1,7 @@
 import threading
 from unittest import TestCase
 
-from primenumbers.generator import get_primes
+from primenumbers.services.prime_generator import get_primes
 
 
 def test_concurrently(times):

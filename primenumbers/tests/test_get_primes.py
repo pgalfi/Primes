@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from primenumbers.generator import get_primes, get_primes_version_01, get_primes_naive
+from primenumbers.services.prime_generator import get_primes, get_primes_version_01, get_primes_naive
 
 
 class TestGetPrimes(TestCase):
