@@ -3,6 +3,7 @@
 1. Naive approach: loop through all k numbers for n > k > 2 and check if n is divisible by k.
 * CPU: Very slow on large numbers, complexity is exponential
 * Memory: almost no memory footprint, no storage
+* No concurrency issues as there is no storage
 
 2. Memorize: keep a memory of all previous primes and only check if new number if divisible with a previous prime
 * CPU: better as the number of compares on all previous primes is less
@@ -12,6 +13,8 @@
 3. Use a bit array as a sieve and apply known mathematical optimizations to the range of prime numbers to be checked to determine if new number if prime.
 * CPU: less number of operations due to the mathematical optimizations
 * Memory: n x 1 bit storage for the sieve.
-* Concurrency: the bit array could be shared and maintained 
+* Concurrency: the bit array could be shared and maintained
+
+4. Use a segmented sieve to reduce storage requirements -- not implemented for this exercise. 
  
  

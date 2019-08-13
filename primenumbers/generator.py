@@ -1,31 +1,34 @@
 from math import sqrt, trunc
+from threading import Lock
 
 from bitarray import bitarray
 
 primes = bitarray([False, False])  # numbers 0 and 1 are not prime
+bitarray_access = Lock()
 
 
-def get_primes(n, start=1, count=None, page=1):
+def get_primes(n, start=1, page=1, size=None):
     if n < 2:
-        return ()
+        return []
     prev_n = primes.length() - 1
+    bitarray_access.acquire()
     if n > prev_n:
         part = bitarray(n - prev_n)
         part.setall(True)
         primes.extend(part)
-
     for i in range(2, int(sqrt(n)) + 1):
         if primes[i] is True:
-            for j in range(max(i * i, i * (trunc(prev_n / i) + 1)), n+1, i):
+            for j in range(max(i * i, i * (trunc(prev_n / i) + 1)), n + 1, i):
                 primes[j] = False
-    if count is None:
+    bitarray_access.release()
+    if size is None:
         return [i for i in range(start, n) if primes[i]]
-    return [i for i in range(start, n) if primes[i]][(page - 1) * count: page * count]
+    return [i for i in range(start, n) if primes[i]][(page - 1) * size: page * size]
 
 
-def get_primes_old(n, start=1, count=None, page=1):
+def get_primes_version_01(n, start=1, page=1, size=None):
     if n < 2:
-        return ()
+        return []
     local_primes = bitarray(n)
     local_primes.setall(True)
     local_primes[1] = False
@@ -33,6 +36,25 @@ def get_primes_old(n, start=1, count=None, page=1):
         if local_primes[i] is True:
             for j in range(i * i, n, i):
                 local_primes[j] = False
-    if count is None:
+    if size is None:
         return [i for i in range(start, n) if local_primes[i]]
-    return [i for i in range(start, n) if local_primes[i]][(page-1) * count: page * count]
+    return [i for i in range(start, n) if local_primes[i]][(page - 1) * size: page * size]
+
+
+def get_primes_naive(n, start=1, page=1, size=None):
+    if n < 2:
+        return []
+    local_primes = [2]
+    if start % 2 == 0:
+        start += 1
+    for i in range(max(3, start), n, 2):
+        is_prime = True
+        for j in range(3, i):
+            if i % j == 0:
+                is_prime = False
+                break
+        if is_prime:
+            local_primes.append(i)
+    if size is None:
+        return local_primes
+    return local_primes[(page - 1) * size: page * size]
